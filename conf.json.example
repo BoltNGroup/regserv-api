@@ -1,5 +1,6 @@
 {
     "EPPAddress": "epp.example.com:700",
     "EPPUsername": "exampleuser",
-    "EPPPassword": "examplepassword"
+    "EPPPassword": "examplepassword",
+    "HTTPPort": "8888"
 }

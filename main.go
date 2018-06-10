@@ -17,6 +17,7 @@ type Configuration struct {
 	EPPAddress  string
 	EPPUsername string
 	EPPPassword string
+	HTTPPort    string
 }
 
 var configuration Configuration
@@ -34,7 +35,7 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/status", GetStatus).Methods("GET")
 	router.HandleFunc("/domain/{domain}/availability", GetDomainAvailability).Methods("GET")
-	log.Fatal(http.ListenAndServe(":8000", router))
+	http.ListenAndServe(":"+configuration.HTTPPort, router)
 }
 
 func GetStatus(w http.ResponseWriter, r *http.Request) {
