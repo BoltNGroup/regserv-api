@@ -1,1 +1,2 @@
 # regserv-api
+This is the software providing a RESTful interface for registry communication. A seperate instance of the software has to be run for each registry the registrar wants to interact with. The [regserv-api-router](https://github.com/BoltNGroup/regserv-api) package can be used to route API requests to instances based on TLDs.
