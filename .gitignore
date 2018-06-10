@@ -13,3 +13,5 @@
 
 # Do not publish config file
 conf.json
+
+debug
