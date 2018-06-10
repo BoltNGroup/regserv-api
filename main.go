@@ -11,12 +11,15 @@ import (
 	epp "github.com/BoltNGroup/go-epp"
 	"github.com/bitly/go-simplejson"
 	"github.com/gorilla/mux"
+	"github.com/likexian/whois-go"
+	"github.com/likexian/whois-parser-go"
 )
 
 type Configuration struct {
 	EPPAddress  string
 	EPPUsername string
 	EPPPassword string
+	WhoisServer string
 	HTTPPort    string
 }
 
@@ -35,6 +38,8 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/status", GetStatus).Methods("GET")
 	router.HandleFunc("/domain/{domain}/availability", GetDomainAvailability).Methods("GET")
+	router.HandleFunc("/domain/{domain}/whois", GetDomainWhois).Methods("GET")
+	router.HandleFunc("/domain/{domain}/whois/raw", GetDomainWhoisRaw).Methods("GET")
 	http.ListenAndServe(":"+configuration.HTTPPort, router)
 }
 
@@ -99,4 +104,32 @@ func GetDomainAvailability(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(payload)
+}
+
+func GetDomainWhois(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+
+	json := simplejson.New()
+	result, err := whois.Whois(params["domain"], configuration.WhoisServer)
+
+	parsed, err := whois_parser.Parse(result)
+
+	json.Set("Registrar", parsed)
+
+	payload, err := json.MarshalJSON()
+	if err != nil {
+		log.Println(err)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(payload)
+}
+
+func GetDomainWhoisRaw(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+
+	result, _ := whois.Whois(params["domain"], configuration.WhoisServer)
+
+	w.Header().Set("Content-Type", "text/plain")
+	w.Write([]byte(result))
 }
