@@ -43,6 +43,7 @@ func main() {
 	http.ListenAndServe(":"+configuration.HTTPPort, router)
 }
 
+// Get API Status
 func GetStatus(w http.ResponseWriter, r *http.Request) {
 	json := simplejson.New()
 	json.Set("status", "ok")
@@ -57,6 +58,7 @@ func GetStatus(w http.ResponseWriter, r *http.Request) {
 	w.Write(payload)
 }
 
+// Get Domain Availability
 func GetDomainAvailability(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
@@ -106,6 +108,7 @@ func GetDomainAvailability(w http.ResponseWriter, r *http.Request) {
 	w.Write(payload)
 }
 
+// Get Parsed Domain Whois Data
 func GetDomainWhois(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
@@ -125,6 +128,7 @@ func GetDomainWhois(w http.ResponseWriter, r *http.Request) {
 	w.Write(payload)
 }
 
+// Get Raw Domain Whois Data
 func GetDomainWhoisRaw(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
