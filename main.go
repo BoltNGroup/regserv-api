@@ -15,6 +15,7 @@ import (
 	"github.com/likexian/whois-parser-go"
 )
 
+// Configuration stores the configuration data from conf.json
 type Configuration struct {
 	EPPAddress  string
 	EPPUsername string
@@ -43,7 +44,7 @@ func main() {
 	http.ListenAndServe(":"+configuration.HTTPPort, router)
 }
 
-// Get API Status
+// GetStatus answers HTTP GET requests to /status
 func GetStatus(w http.ResponseWriter, r *http.Request) {
 	json := simplejson.New()
 	json.Set("status", "ok")
@@ -58,7 +59,7 @@ func GetStatus(w http.ResponseWriter, r *http.Request) {
 	w.Write(payload)
 }
 
-// Get Domain Availability
+// GetDomainAvailability answers HTTP GET requests to /domain/{domain}/availability
 func GetDomainAvailability(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
@@ -108,7 +109,7 @@ func GetDomainAvailability(w http.ResponseWriter, r *http.Request) {
 	w.Write(payload)
 }
 
-// Get Parsed Domain Whois Data
+//  GetDomainWhois answers HTTP GET requests to /domain/{domain}/whois
 func GetDomainWhois(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
@@ -128,7 +129,7 @@ func GetDomainWhois(w http.ResponseWriter, r *http.Request) {
 	w.Write(payload)
 }
 
-// Get Raw Domain Whois Data
+// GetDomainWhoisRaw answers HTTP GET requests to /domain/{domain}/whois/raw
 func GetDomainWhoisRaw(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
